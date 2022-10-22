@@ -1,4 +1,3 @@
-package com.makecash.cash.cash.util
 
 import android.animation.Animator
 import android.animation.ValueAnimator
