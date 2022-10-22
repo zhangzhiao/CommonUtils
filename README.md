@@ -1,2 +1,2 @@
 # CommonUtils
-常用的Kotlin工具类
+常用的Android Kotlin工具类
