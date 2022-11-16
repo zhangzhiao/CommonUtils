@@ -1,4 +1,3 @@
-
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.Activity
@@ -29,7 +28,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 /**
- * @Author： created by zhangZhiAo
+ * @Author： created by XiaoLiang edit by Zza
  * @CreateTime: 2022/6/10 14:37
  * @Describe: 常用的
  */
@@ -144,6 +143,8 @@ object CommonUtil {
         private val run: T.(Task<T>) -> Unit
     ) {
 
+        var pollKey = -1
+
         val runnable = Runnable {
             try {
                 run(target, this@Task)
@@ -159,6 +160,10 @@ object CommonUtil {
 
         fun run() {
             doAsync(this)
+        }
+
+        fun removePoll() {
+            removePoll(pollKey)
         }
 
         fun sync() {
@@ -216,6 +221,7 @@ inline fun <reified T> T.doPoll(
 ): CommonUtil.Task<T> {
     val task = task(err, run)
     CommonUtil.loop(delay, loopKey, task)
+    task.pollKey = loopKey
     return task
 }
 
@@ -522,6 +528,21 @@ fun String.tryInt(def: Int): Int {
  */
 fun View.getColor(id: Int): Int {
     return ContextCompat.getColor(this.context, id)
+}
+
+/**
+ * View 三件套
+ */
+fun View.toVisible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.toGone() {
+    this.visibility = View.GONE
+}
+
+fun View.toInvisible() {
+    this.visibility = View.INVISIBLE
 }
 
 /**

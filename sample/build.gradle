@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.zh.zza.commonutilsshell'
+    namespace 'com.zh.zza.utils.sample'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.zh.zza.commonutilsshell"
+        applicationId "com.zh.zza.utils.sample"
         minSdk 23
         targetSdk 32
         versionCode 1
@@ -33,7 +33,8 @@ android {
 }
 
 dependencies {
-
+    implementation project(":CommonUtils")
+//    implementation 'com.github.zhangzhiao:CommonUtils:1.0.2'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'

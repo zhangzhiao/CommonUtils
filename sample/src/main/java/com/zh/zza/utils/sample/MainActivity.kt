@@ -1,31 +1,25 @@
-# CommonUtils
-Android Kotlin CommonUtils 
+package com.zh.zza.utils.sample
 
-## These tools depend on ViewBinding!
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import appGlobalScope
+import delay
+import doAsync
+import doPoll
+import kotlinx.coroutines.launch
+import onUI
+import removePoll
+import toGone
+import toInvisible
+import toVisible
 
-### Step 1. Add the JitPack repository to your build file
-Add it in your root build.gradle at the end of repositories:
-```groovy
-allprojects {
-    repositories {
-        maven { url 'https://jitpack.io' }
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
     }
-} 
-```
-### Step 2. Add the dependency
-```groovy
-dependencies {
-    implementation 'com.github.zhangzhiao:CommonUtils:Tag'
-}
-```
-See the tag of the latest release
 
-[![](https://jitpack.io/v/zhangzhiao/CommonUtils.svg)](https://jitpack.io/#zhangzhiao/CommonUtils)
-
----
-
-## USE 
-```kotlin
     /**
      * 本方法演示使用DSL样式进行ext的切换线程
      */
@@ -68,6 +62,4 @@ See the tag of the latest release
 
         }
     }
-```
-
-    
+}
