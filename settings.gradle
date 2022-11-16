@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CommonUtilsShell"
 include ':CommonUtils'
-include ':sample'
