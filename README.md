@@ -69,5 +69,5 @@ See the tag of the latest release
         }
     }
 ```
-
-    
+---
+# Apache License 2.0
