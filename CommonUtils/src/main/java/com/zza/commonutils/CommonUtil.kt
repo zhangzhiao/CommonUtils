@@ -22,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import java.io.*
+import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 import java.util.concurrent.Executor
@@ -392,11 +393,11 @@ val Int.sp2px: Int
  * 如果找不到或者发生了异常，那么将会返回白色
  */
 fun Int.findColor(context: Context): Int {
-    try {
-        return ContextCompat.getColor(context, this)
+    return try {
+        ContextCompat.getColor(context, this)
     } catch (e: Throwable) {
+        Color.WHITE
     }
-    return Color.WHITE
 }
 
 /**
@@ -636,6 +637,52 @@ fun String.writeTo(file: File) {
         e.printStackTrace()
     }
 }
+
+/**
+ * 帧率计算内容
+ * 一个小的实用程序类，允许[doFrame]基于本机[Choreographer]执行每一帧,而不是使用预先计算的值和计时器。
+ * [doFrame]在主线程上运行，并在下一帧执行。
+ * [SyncedRenderer]可以自由重启。
+ */
+class SyncedRenderer(val doFrame: SyncedRenderer.(frameTimeNanos: Long) -> Unit) {
+
+    private var callback: (Long) -> Unit = {}
+
+    fun start() {
+        callback = {
+            doFrame(it)
+            Choreographer.getInstance().postFrameCallback(callback)
+        }
+        Choreographer.getInstance().postFrameCallback(callback)
+    }
+
+    fun stop() {
+        Choreographer.getInstance().removeFrameCallback(callback)
+        callback = {}
+    }
+}
+
+fun getFps(count: Int = 20, fpsResult: (Double) -> Unit) {
+    var tempCount = count
+    var fpsSum = 0.0
+    var currTime = 0.0
+    val renderer = SyncedRenderer {
+        if (currTime != 0.0) {
+            val temp = it / 1000000.0 - currTime
+            fpsSum += 1000.0 / temp
+            tempCount--
+            if (tempCount <= 0) {
+                stop()
+                val fpsNum = fpsSum / count
+                val fpsFormat = BigDecimal(fpsNum).setScale(2, BigDecimal.ROUND_HALF_UP).toDouble()
+                fpsResult(fpsFormat)
+            }
+        }
+        currTime = it / 1000000.0
+    }
+    renderer.start()
+}
+
 
 inline fun <reified T : ViewBinding> Activity.lazyBind(): Lazy<T> = lazy { bind() }
 
