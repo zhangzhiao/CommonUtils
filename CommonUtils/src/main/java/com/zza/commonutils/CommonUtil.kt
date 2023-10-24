@@ -220,6 +220,9 @@ inline fun <reified T> T.doPoll(
     noinline err: (Throwable) -> Unit = {},
     noinline run: T.(CommonUtil.Task<T>) -> Unit
 ): CommonUtil.Task<T> {
+    if (CommonUtil.loopCache.containsKey(loopKey)) {
+        removePoll(loopKey)
+    }
     val task = task(err, run)
     CommonUtil.loop(delay, loopKey, task)
     task.pollKey = loopKey
